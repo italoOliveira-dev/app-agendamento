@@ -1,0 +1,16 @@
+services:
+  postgres:
+    container_name: postgresdb
+    image:  postgres:latest
+    environment:
+      POSTGRES_USER: ${PSQL_USER}
+      POSTGRES_PASSWORD: ${PSQL_PASSWORD}
+      POSTGRES_DB: appagendamentodb
+    volumes:
+      - postgres_agendamento_app:/var/lib/postgresql/data
+    ports:
+      - "5430:5432"
+    restart: unless-stopped
+
+volumes:
+  postgres_agendamento_app:
