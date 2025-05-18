@@ -1,3 +1,17 @@
 spring:
   application:
     name: 'app-agendamento'
+  jpa:
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          time-zone: America/Fortaleza
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  datasource:
+    url: jdbc:postgresql://${URL_DB:localhost:5430}/${NAME_DB:appagendamentodb}
+    username: ${PSQL_USER:postgres}
+    password: ${PSQL_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
