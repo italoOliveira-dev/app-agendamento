@@ -9,6 +9,9 @@ import com.italooliveira.app_agendamento.backend.repositories.UsuarioRepository;
 import com.italooliveira.app_agendamento.backend.services.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 import java.util.Optional;
 
@@ -20,6 +23,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioMapper usuarioMapper;
 
     @Override
+    @Transactional
     public void cadastrarUsuario(UsuarioCreateDTO usuarioDTO) {
         Optional<Usuario> emailJaExiste = usuarioRepository.findByEmail(usuarioDTO.email());
         Optional<Usuario> cpfJaExiste = usuarioRepository.findByCpf(usuarioDTO.cpf());
