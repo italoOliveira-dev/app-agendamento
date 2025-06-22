@@ -1,5 +1,8 @@
 package com.italooliveira.app_agendamento.backend.exceptions.handler;
 
+import com.italooliveira.app_agendamento.backend.exceptions.CpfJaCadastradoException;
+import com.italooliveira.app_agendamento.backend.exceptions.EmailJaCadastradoException;
+import com.italooliveira.app_agendamento.backend.exceptions.MensagemPadraoErro;
 import com.italooliveira.app_agendamento.backend.exceptions.ValidacaoMensagemErro;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -35,5 +38,33 @@ public class GlobalHandlerException {
         }
 
         return ResponseEntity.status(status).body(erro);
+    }
+
+    @ExceptionHandler(EmailJaCadastradoException.class)
+    public ResponseEntity<MensagemPadraoErro> handlerEmailJaCadastradoException(EmailJaCadastradoException ex, HttpServletRequest request){
+        HttpStatus status = HttpStatus.CONFLICT;
+        return ResponseEntity.status(status).body(
+                MensagemPadraoErro.builder()
+                        .path(request.getRequestURI())
+                        .status(status.value())
+                        .error(status.getReasonPhrase())
+                        .message(ex.getMessage())
+                        .timestamp(formatarParaPadraoBrasileiro(LocalDateTime.now()))
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(CpfJaCadastradoException.class)
+    public ResponseEntity<MensagemPadraoErro> handlerCpfJaCadastradoException(CpfJaCadastradoException ex, HttpServletRequest request){
+        HttpStatus status = HttpStatus.CONFLICT;
+        return ResponseEntity.status(status).body(
+                MensagemPadraoErro.builder()
+                        .path(request.getRequestURI())
+                        .status(status.value())
+                        .error(status.getReasonPhrase())
+                        .message(ex.getMessage())
+                        .timestamp(formatarParaPadraoBrasileiro(LocalDateTime.now()))
+                        .build()
+        );
     }
 }
