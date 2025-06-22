@@ -13,3 +13,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/appagendamentodb
     username: agendamentobackend
     password: 123789
+springdoc:
+  open-api:
+    titulo: 'App Agendamento BackEnd'
+    descricao: 'API responsável pelo gerenciamento de todos os recursos do aplicativo App Agendamento'
+    versao: '1.0.0'
