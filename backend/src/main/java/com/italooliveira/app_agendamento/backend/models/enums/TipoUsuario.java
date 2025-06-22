@@ -20,7 +20,7 @@ public enum TipoUsuario {
         return Arrays.stream(TipoUsuario.values())
                 .filter(descricao -> descricao.getTipoUsuario().equals(tipoUsuario))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Tipo de usuário inválido " +  tipoUsuario));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Tipo de usuário '%s' não foi encontrado",  tipoUsuario)));
     }
 
 }
