@@ -1,8 +1,10 @@
 package com.italooliveira.app_agendamento.backend.services.impl;
 
 import com.italooliveira.app_agendamento.backend.dtos.requests.UsuarioCreateDTO;
+import com.italooliveira.app_agendamento.backend.dtos.responses.UsuarioResponseDTO;
 import com.italooliveira.app_agendamento.backend.exceptions.CpfJaCadastradoException;
 import com.italooliveira.app_agendamento.backend.exceptions.EmailJaCadastradoException;
+import com.italooliveira.app_agendamento.backend.exceptions.UsuarioNotFoundException;
 import com.italooliveira.app_agendamento.backend.mapper.UsuarioMapper;
 import com.italooliveira.app_agendamento.backend.models.Usuario;
 import com.italooliveira.app_agendamento.backend.repositories.UsuarioRepository;
@@ -10,8 +12,6 @@ import com.italooliveira.app_agendamento.backend.services.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 import java.util.Optional;
 
@@ -35,5 +35,17 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         usuarioRepository.save(usuarioMapper.toEntity(usuarioDTO));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UsuarioResponseDTO obterUsuario(Long id) {
+        return usuarioMapper.fromEntity(ObterUsuarioPorId(id));
+    }
+
+    private Usuario ObterUsuarioPorId(Long id) {
+        return usuarioRepository.findById(id).orElseThrow(() ->
+            new UsuarioNotFoundException(String.format("Usuário com 'id: %d' não encontrado", id))
+        );
     }
 }

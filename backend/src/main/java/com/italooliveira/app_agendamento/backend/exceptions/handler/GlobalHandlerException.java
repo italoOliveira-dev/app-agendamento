@@ -1,9 +1,6 @@
 package com.italooliveira.app_agendamento.backend.exceptions.handler;
 
-import com.italooliveira.app_agendamento.backend.exceptions.CpfJaCadastradoException;
-import com.italooliveira.app_agendamento.backend.exceptions.EmailJaCadastradoException;
-import com.italooliveira.app_agendamento.backend.exceptions.MensagemPadraoErro;
-import com.italooliveira.app_agendamento.backend.exceptions.ValidacaoMensagemErro;
+import com.italooliveira.app_agendamento.backend.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +54,20 @@ public class GlobalHandlerException {
     @ExceptionHandler(CpfJaCadastradoException.class)
     public ResponseEntity<MensagemPadraoErro> handlerCpfJaCadastradoException(CpfJaCadastradoException ex, HttpServletRequest request){
         HttpStatus status = HttpStatus.CONFLICT;
+        return ResponseEntity.status(status).body(
+                MensagemPadraoErro.builder()
+                        .path(request.getRequestURI())
+                        .status(status.value())
+                        .error(status.getReasonPhrase())
+                        .message(ex.getMessage())
+                        .timestamp(formatarParaPadraoBrasileiro(LocalDateTime.now()))
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(UsuarioNotFoundException.class)
+    public ResponseEntity<MensagemPadraoErro> handlerUsuarioNotFoundException(UsuarioNotFoundException ex, HttpServletRequest request){
+        HttpStatus status = HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status).body(
                 MensagemPadraoErro.builder()
                         .path(request.getRequestURI())

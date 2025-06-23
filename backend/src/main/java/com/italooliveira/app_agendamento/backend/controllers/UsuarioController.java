@@ -1,6 +1,7 @@
 package com.italooliveira.app_agendamento.backend.controllers;
 
 import com.italooliveira.app_agendamento.backend.dtos.requests.UsuarioCreateDTO;
+import com.italooliveira.app_agendamento.backend.dtos.responses.UsuarioResponseDTO;
 import com.italooliveira.app_agendamento.backend.exceptions.MensagemPadraoErro;
 import com.italooliveira.app_agendamento.backend.exceptions.ValidacaoMensagemErro;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,9 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "UsuarioController", description = "Controller responsável pelas operações de usuários.")
 @RequestMapping("/api/usuarios")
@@ -51,4 +50,19 @@ public interface UsuarioController {
     })
     @PostMapping("/cadastro")
     ResponseEntity<Void> cadastrarUsuario(@Valid @RequestBody UsuarioCreateDTO usuario);
+
+    @Operation(summary = "Obter usuário polo id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário Encontrado"),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Usuario não encontrado",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = MensagemPadraoErro.class)
+                    )
+            )
+    })
+    @GetMapping("/{id}")
+    ResponseEntity<UsuarioResponseDTO> obterUsuariosPorId(@PathVariable Long id);
 }
