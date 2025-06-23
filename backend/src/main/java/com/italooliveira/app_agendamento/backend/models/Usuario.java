@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,10 +43,10 @@ public class Usuario {
     private Set<Disponibilidade> disponibilidades = new HashSet<>();
 
     @OneToMany(mappedBy = "usuario")
-    private List<Servico> servicos;
+    private List<Servico> servicos = new ArrayList<>();
 
     @OneToMany(mappedBy = "usuario")
-    private List<Agendamento> agendamentos;
+    private List<Agendamento> agendamentos = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {
